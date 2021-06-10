@@ -1,0 +1,19 @@
+{
+  "name": "vendor_name/php-files",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "viktor",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "FaustVik\\Files\\": "src/"
+    }
+  }
+}

@@ -81,4 +81,10 @@ abstract class AbstractFile implements IOInterface, FileInterface
         $this->flag_ignore_new_line = true;
         return $this;
     }
+
+    public function getExtension(): string
+    {
+        $info = pathinfo($this->path_to_file);
+        return $info['extension'];
+    }
 }

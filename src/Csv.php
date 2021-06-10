@@ -8,6 +8,21 @@ namespace FaustVik\Files;
  */
 class Csv extends AbstractFile
 {
+    /**
+     * Csv constructor.
+     *
+     * @param string $path_to_file
+     *
+     * @throws FIleException
+     */
+    public function __construct(string $path_to_file)
+    {
+        parent::__construct($path_to_file);
+
+        if ($this->getExtension() !== 'csv') {
+            throw new FIleException('Extension not supported');
+        }
+    }
 
     /**
      * @inheritDoc

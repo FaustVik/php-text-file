@@ -18,4 +18,11 @@ interface FileInterface
      * @return int
      */
     public function getSize():int;
+
+    /**
+     * Get extension file
+     *
+     * @return string
+     */
+    public function getExtension():string;
 }

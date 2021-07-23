@@ -8,6 +8,11 @@ namespace FaustVik\Files;
  */
 class File extends AbstractFile
 {
+    /**@var bool $flag_skip_empty_line */
+    protected $flag_skip_empty_line = false;
+    /**@var bool $flag_ignore_new_line */
+    protected $flag_ignore_new_line = false;
+
     /**
      * @return array
      */
@@ -44,11 +49,7 @@ class File extends AbstractFile
      */
     public function readFileToString($offset = null, $length = null): string
     {
-        if ($length) {
-            $string = file_get_contents($this->path_to_file, false, null, $offset, $length);
-        } else {
-            $string = file_get_contents($this->path_to_file, false, null, $offset);
-        }
+        $string = file_get_contents($this->path_to_file, false, null, $offset, $length);
 
         if ($string === false) {
             return '';
@@ -58,24 +59,20 @@ class File extends AbstractFile
     }
 
     /**
-     * Save file
-     *
-     * @return bool
+     * @return $this
      */
-    public function save(): bool
+    public function skipEmptyLine(): AbstractFile
     {
-        // TODO: Implement save() method.
+        $this->flag_skip_empty_line = true;
+        return $this;
     }
 
     /**
-     * Save data in new file
-     *
-     * @param string $path
-     *
-     * @return bool
+     * @return $this
      */
-    public function saveToNewFile(string $path): bool
+    public function ignoreNewLines(): AbstractFile
     {
-        // TODO: Implement saveToNewFile() method.
+        $this->flag_ignore_new_line = true;
+        return $this;
     }
 }

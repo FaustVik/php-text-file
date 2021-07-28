@@ -66,4 +66,14 @@ abstract class AbstractFile implements FileInterface
         $info = pathinfo($this->path_to_file);
         return $info['extension'];
     }
+
+    /**
+     * @param string $path
+     *
+     * @return bool
+     */
+    public static function exist(string $path): bool
+    {
+        return file_exists($path) && is_file($path) && is_readable($path);
+    }
 }

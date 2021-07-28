@@ -12,6 +12,7 @@ Simple library for working with text files (CSV, .txt and etc.)
 | getName() | Get file name |
 | getSize() | Get file size (in bytes) |
 | getExtension() | Get file extension  |
+| exist() | Check file exist  |
 
 ### CSV
 

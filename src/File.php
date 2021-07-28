@@ -10,6 +10,7 @@ class File extends AbstractFile
 {
     /**@var bool $flag_skip_empty_line */
     protected $flag_skip_empty_line = false;
+
     /**@var bool $flag_ignore_new_line */
     protected $flag_ignore_new_line = false;
 

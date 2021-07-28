@@ -141,7 +141,13 @@ class Csv extends AbstractFile
      */
     public function overwriteToFile(array $fields, string $separator = ",", string $enclosure = '"', string $escape_char = "\\"): void
     {
-        $this->write('w+', $fields, $separator, $enclosure, $escape_char);
+        $handle_file = $this->openFile('w+');
+
+        if (!$handle_file) {
+            return;
+        }
+
+        $this->write($handle_file, $fields, $separator, $enclosure, $escape_char);
     }
 
     /**
@@ -154,24 +160,24 @@ class Csv extends AbstractFile
      */
     public function appendToFile(array $fields, string $separator = ",", string $enclosure = '"', string $escape_char = "\\"): void
     {
-        $this->write('a+', $fields, $separator, $enclosure, $escape_char);
-    }
-
-    /**
-     * @param string $mode
-     * @param array  $fields
-     * @param string $separator
-     * @param string $enclosure
-     * @param string $escape_char
-     */
-    protected function write(string $mode, array $fields, string $separator = ",", string $enclosure = '"', string $escape_char = "\\"): void
-    {
-        $handle_file = $this->openFile($mode);
+        $handle_file = $this->openFile('a+');
 
         if (!$handle_file) {
             return;
         }
 
+        $this->write($handle_file, $fields, $separator, $enclosure, $escape_char);
+    }
+
+    /**
+     * @param resource $handle_file
+     * @param array    $fields
+     * @param string   $separator
+     * @param string   $enclosure
+     * @param string   $escape_char
+     */
+    protected function write($handle_file, array $fields, string $separator = ",", string $enclosure = '"', string $escape_char = "\\"): void
+    {
         if ($fields === []) {
             return;
         }
@@ -188,12 +194,29 @@ class Csv extends AbstractFile
     }
 
     /**
-     * @param string $mode
+     * @param string      $mode
+     * @param string|null $path_file
      *
      * @return false|resource
      */
-    protected function openFile(string $mode = 'rb')
+    protected function openFile(string $mode = 'rb', string $path_file = null)
     {
-        return fopen($this->path_to_file, $mode);
+        return fopen($path_file ?? $this->path_to_file, $mode);
+    }
+
+    /**
+     * @param string $path_to_new_file
+     * @param bool   $overwrite_file
+     * @param string $separator
+     * @param string $enclosure
+     * @param string $escape_char
+     */
+    public function saveToNewFile(string $path_to_new_file, bool $overwrite_file = false, string $separator = ",", string $enclosure = '"', string $escape_char = "\\"): void
+    {
+        $data = $this->readToArray();
+        $mode = $overwrite_file ? 'w+' : 'a+';
+
+        $handle_file = $this->openFile($mode, $path_to_new_file);
+        $this->write($handle_file, $data, $separator, $enclosure, $escape_char);
     }
 }

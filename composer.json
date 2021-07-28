@@ -1,16 +1,21 @@
 {
-  "name": "vendor_name/php-files",
-  "description": "description",
+  "name": "FaustVik/php-files",
+  "description": "Simple library for working with text",
+  "keywords": [
+    "php",
+    "file",
+    "files",
+    "csv",
+    "txt"
+  ],
   "minimum-stability": "stable",
-  "license": "proprietary",
+  "license": "MIT",
   "authors": [
     {
-      "name": "viktor",
-      "email": "email@example.com"
+      "name": "Victor",
+      "email": "onetricksnidalee@gmail.com"
     }
   ],
-  "require": {
-  },
   "autoload": {
     "psr-4": {
       "FaustVik\\Files\\": "src/"

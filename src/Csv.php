@@ -9,10 +9,10 @@ namespace FaustVik\Files;
 class Csv extends AbstractFile
 {
     /**@var array $list_ass_key */
-    private $list_ass_key = [];
+    protected $list_ass_key = [];
 
     /**@var bool $skip_first_line */
-    private $skip_first_line = false;
+    protected $skip_first_line = false;
 
     /**
      * Csv constructor.
@@ -108,27 +108,6 @@ class Csv extends AbstractFile
     {
         $this->skip_first_line = true;
         return $this;
-    }
-
-    /**
-     * @param string $text
-     * @param string $separator
-     *
-     * @return array
-     */
-    public function stringToArray(string $text, string $separator): array
-    {
-        if ($text === '' || $separator === '') {
-            return [];
-        }
-
-        $array = explode($separator, $text);
-
-        if (!$array) {
-            return [];
-        }
-
-        return $array;
     }
 
     /**

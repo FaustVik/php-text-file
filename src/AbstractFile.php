@@ -12,7 +12,7 @@ abstract class AbstractFile implements FileInterface
     protected $path_to_file;
 
     /**
-     * File constructor.
+     * AbstractFile constructor.
      *
      * @param string $path_to_file
      *
@@ -75,5 +75,37 @@ abstract class AbstractFile implements FileInterface
     public static function exist(string $path): bool
     {
         return file_exists($path) && is_file($path) && is_readable($path);
+    }
+
+    /**
+     * @param string $new_name
+     *
+     * @return bool
+     */
+    public function rename(string $new_name): bool
+    {
+        $new_path = str_replace($this->getName(), $new_name, $this->getPathFile());
+        $res      = rename($this->getPathFile(), $new_path);
+
+        $this->path_to_file = $new_path;
+        return $res;
+    }
+
+    /**
+     * @param string $new_path
+     *
+     * @return bool
+     */
+    public function copy(string $new_path): bool
+    {
+        return copy($this->getPathFile(), $new_path);
+    }
+
+    /**
+     * @return bool
+     */
+    public function delete(): bool
+    {
+        return unlink($this->getPathFile());
     }
 }

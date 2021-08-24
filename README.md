@@ -13,6 +13,9 @@ Simple library for working with text files (CSV, .txt and etc.)
 | getSize() | Get file size (in bytes) |
 | getExtension() | Get file extension  |
 | exist() | Check file exist  |
+| rename() | Rename file  |
+| copy() | Copy current file to new file  |
+| delete() | Delete current file  |
 
 ### CSV
 
@@ -33,6 +36,9 @@ Simple library for working with text files (CSV, .txt and etc.)
 | readFileToString() | Reading a file into a string |
 | skipEmptyLine() | Skip blank line when reading |
 | ignoreNewLines() | Skip a newline at the end of each array element  |
+| overwriteToFile() | Overwrite the current file with new data  |
+| appendToFile() |  Append data to the end of the file  |
+| saveToNewFile() |  Save data from current file to new file  |
 
 # Example
 

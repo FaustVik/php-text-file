@@ -3,10 +3,10 @@
 namespace FaustVik\Files;
 
 /**
- * Class File
+ * Class TextFile
  * @package FaustVik\Files
  */
-class File extends AbstractFile
+class TextFile extends AbstractFile
 {
     /**@var bool $flag_skip_empty_line */
     protected $flag_skip_empty_line = false;
@@ -75,5 +75,30 @@ class File extends AbstractFile
     {
         $this->flag_ignore_new_line = true;
         return $this;
+    }
+
+    /**
+     * @param string $text
+     */
+    public function overwriteToFile(string $text): void
+    {
+        file_put_contents($this->path_to_file, $text);
+    }
+
+    /**
+     * @param string|null $text
+     */
+    public function appendToFile(string $text): void
+    {
+        file_put_contents($this->path_to_file, $text, FILE_APPEND);
+    }
+
+    /**
+     * @param string $path_to_new_file
+     */
+    public function saveToNewFile(string $path_to_new_file): void
+    {
+        $text = $this->readFileToString();
+        file_put_contents($path_to_new_file, $text);
     }
 }

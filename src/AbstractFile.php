@@ -4,12 +4,14 @@ namespace FaustVik\Files;
 
 use FaustVik\Files\exceptions\FileIsNotReadable;
 use FaustVik\Files\exceptions\FileNotFound;
+use FaustVik\Files\interfaces\InfoFileInterface;
+use FaustVik\Files\interfaces\MoveInterface;
 
 /**
  * Class AbstractFile
  * @package FaustVik\Files
  */
-abstract class AbstractFile implements FileInterface
+abstract class AbstractFile implements InfoFileInterface, MoveInterface
 {
     /**@var string $path_to_file */
     protected $path_to_file;

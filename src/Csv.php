@@ -2,6 +2,8 @@
 
 namespace FaustVik\Files;
 
+use FaustVik\Files\exceptions\FileNotSupported;
+
 /**
  * Class Csv
  * @package FaustVik\Files
@@ -19,14 +21,18 @@ class Csv extends AbstractFile
      *
      * @param string $path_to_file
      *
-     * @throws FIleException
+     * @throws FileNotSupported
+     * @throws exceptions\FileIsNotReadable
+     * @throws exceptions\FileNotFound
      */
     public function __construct(string $path_to_file)
     {
         parent::__construct($path_to_file);
 
-        if ($this->getExtension() !== 'csv') {
-            throw new FIleException('Extension not supported');
+        $ext = $this->getExtension();
+
+        if ($ext !== 'csv') {
+            throw new FileNotSupported($ext . ' this extension not supported');
         }
     }
 
@@ -43,7 +49,6 @@ class Csv extends AbstractFile
     public function readToArray(?int $length = 1000, string $separator = ',', string $enclosure = '"', string $escape = '\\'): array
     {
         $result = [];
-
         $counter = 0;
 
         if (($handle = $this->openFile()) !== false) {

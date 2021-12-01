@@ -2,11 +2,13 @@
 
 namespace FaustVik\Files;
 
+use FaustVik\Files\interfaces\IoTextInterface;
+
 /**
  * Class TextFile
  * @package FaustVik\Files
  */
-class TextFile extends AbstractFile
+class TextFile extends AbstractFile implements IoTextInterface
 {
     /**@var bool $flag_skip_empty_line */
     protected $flag_skip_empty_line = false;
@@ -18,6 +20,18 @@ class TextFile extends AbstractFile
      * @return array
      */
     public function readFileToArray(): array
+    {
+        $flags = $this->getFlags();
+        $array = file($this->path_to_file, $flags);
+
+        if ($array === false) {
+            return [];
+        }
+
+        return $array;
+    }
+
+    protected function getFlags(): ?int
     {
         $flags = null;
 
@@ -33,13 +47,7 @@ class TextFile extends AbstractFile
             }
         }
 
-        $array = file($this->path_to_file, $flags);
-
-        if ($array === false) {
-            return [];
-        }
-
-        return $array;
+        return $flags;
     }
 
     /**

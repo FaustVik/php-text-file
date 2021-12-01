@@ -2,11 +2,16 @@
 
 namespace FaustVik\Files;
 
+use FaustVik\Files\exceptions\FileIsNotReadable;
+use FaustVik\Files\exceptions\FileNotFound;
+use FaustVik\Files\interfaces\InfoFileInterface;
+use FaustVik\Files\interfaces\MoveInterface;
+
 /**
  * Class AbstractFile
  * @package FaustVik\Files
  */
-abstract class AbstractFile implements FileInterface
+abstract class AbstractFile implements InfoFileInterface, MoveInterface
 {
     /**@var string $path_to_file */
     protected $path_to_file;
@@ -16,23 +21,34 @@ abstract class AbstractFile implements FileInterface
      *
      * @param string $path_to_file
      *
-     * @throws FIleException
+     * @throws FileNotFound
+     * @throws FileIsNotReadable
      */
     public function __construct(string $path_to_file)
     {
+        $this->checkFile($path_to_file);
+        $this->setPathToFile($path_to_file);
+    }
+
+    /**
+     * @param string $path_to_file
+     *
+     * @throws FileIsNotReadable
+     * @throws FileNotFound
+     */
+    protected function checkFile(string $path_to_file): void
+    {
         if (!file_exists($path_to_file)) {
-            throw new FIleException('Not found file path: ' . $path_to_file);
+            throw new FileNotFound('Not found file path: ' . $path_to_file);
         }
 
         if (!is_file($path_to_file)) {
-            throw new FIleException('Is not file');
+            throw new FileNotFound('Is not file');
         }
 
         if (!is_readable($path_to_file)) {
-            throw new FIleException('No readable file');
+            throw new FileIsNotReadable('Not readable file');
         }
-
-        $this->path_to_file = $path_to_file;
     }
 
     /**
@@ -48,7 +64,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function getName(): string
     {
-        return basename($this->path_to_file);
+        return basename($this->getPathFile());
     }
 
     /**
@@ -58,12 +74,12 @@ abstract class AbstractFile implements FileInterface
      */
     public function getSize(): int
     {
-        return filesize($this->path_to_file);
+        return filesize($this->getPathFile());
     }
 
     public function getExtension(): string
     {
-        $info = pathinfo($this->path_to_file);
+        $info = pathinfo($this->getPathFile());
         return $info['extension'];
     }
 
@@ -87,7 +103,7 @@ abstract class AbstractFile implements FileInterface
         $new_path = str_replace($this->getName(), $new_name, $this->getPathFile());
         $res      = rename($this->getPathFile(), $new_path);
 
-        $this->path_to_file = $new_path;
+        $this->setPathToFile($new_path);
         return $res;
     }
 
@@ -107,5 +123,13 @@ abstract class AbstractFile implements FileInterface
     public function delete(): bool
     {
         return unlink($this->getPathFile());
+    }
+
+    /**
+     * @param string $path_to_file
+     */
+    protected function setPathToFile(string $path_to_file): void
+    {
+        $this->path_to_file = $path_to_file;
     }
 }

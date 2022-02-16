@@ -9,7 +9,7 @@
     "txt",
     "text"
   ],
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "prefer-stable": true,
   "license": "MIT",
   "authors": [

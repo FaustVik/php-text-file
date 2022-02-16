@@ -1,13 +1,14 @@
 {
-  "name": "faustvik/php-files",
+  "name": "faustvik/php-text-file",
   "description": "Simple library for working with text file",
-  "version": "0.4",
+  "version": "0.4.2",
   "keywords": [
     "php",
     "file",
     "files",
     "csv",
-    "txt"
+    "txt",
+    "text"
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,

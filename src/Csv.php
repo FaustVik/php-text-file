@@ -28,12 +28,7 @@ class Csv extends AbstractFile
     public function __construct(string $path_to_file)
     {
         parent::__construct($path_to_file);
-
-        $ext = $this->getExtension();
-
-        if ($ext !== 'csv') {
-            throw new FileNotSupported($ext . ' this extension not supported');
-        }
+        $this->checkExtension();
     }
 
     /**
@@ -48,7 +43,7 @@ class Csv extends AbstractFile
      */
     public function readToArray(?int $length = 1000, string $separator = ',', string $enclosure = '"', string $escape = '\\'): array
     {
-        $result = [];
+        $result  = [];
         $counter = 0;
 
         if (($handle = $this->openFile()) !== false) {
@@ -202,5 +197,17 @@ class Csv extends AbstractFile
 
         $handle_file = $this->openFile($mode, $path_to_new_file);
         $this->write($handle_file, $data, $separator, $enclosure, $escape_char);
+    }
+
+    /**
+     * @throws FileNotSupported
+     */
+    protected function checkExtension(): void
+    {
+        $ext = $this->getExtension();
+
+        if ($ext !== 'csv') {
+            throw new FileNotSupported($ext . ' this extension not supported');
+        }
     }
 }

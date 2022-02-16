@@ -90,7 +90,7 @@ class TextFile extends AbstractFile implements IoTextInterface
      */
     public function overwriteToFile(string $text): void
     {
-        file_put_contents($this->path_to_file, $text);
+        $this->write($text, false);
     }
 
     /**
@@ -98,7 +98,7 @@ class TextFile extends AbstractFile implements IoTextInterface
      */
     public function appendToFile(string $text): void
     {
-        file_put_contents($this->path_to_file, $text, FILE_APPEND);
+        $this->write($text);
     }
 
     /**
@@ -107,6 +107,17 @@ class TextFile extends AbstractFile implements IoTextInterface
     public function saveToNewFile(string $path_to_new_file): void
     {
         $text = $this->readFileToString();
-        file_put_contents($path_to_new_file, $text);
+        $this->write($text, false, $path_to_new_file);
+    }
+
+    protected function write(string $text, bool $add_to_file = true, ?string $another_path_file = null)
+    {
+        $path = $another_path_file ?? $this->path_to_file;
+
+        if ($add_to_file) {
+            return file_put_contents($path, $text, FILE_APPEND);
+        }
+
+        return file_put_contents($path, $text);
     }
 }

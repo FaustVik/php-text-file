@@ -1,7 +1,6 @@
 {
   "name": "faustvik/php-text-file",
   "description": "Simple library for working with text file",
-  "version": "v1.0",
   "keywords": [
     "php",
     "file",

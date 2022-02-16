@@ -2,43 +2,49 @@
 
 Simple library for working with text files (CSV, .txt and etc.)
 
+#Install
+
+```bash
+composer require faustvik/php-text-file
+```
+
 # Methods
 
 ### Common functions
 
-| Method | Info |
-| ------ | ------ |
-| getPathFile() | Get the path to the current file |
-| getName() | Get file name |
-| getSize() | Get file size (in bytes) |
-| getExtension() | Get file extension  |
-| exist() | Check file exist  |
-| rename() | Rename file  |
-| copy() | Copy current file to new file  |
-| delete() | Delete current file  |
+| Method         | Info                             |
+|----------------|----------------------------------|
+| getPathFile()  | Get the path to the current file |
+| getName()      | Get file name                    |
+| getSize()      | Get file size (in bytes)         |
+| getExtension() | Get file extension               |
+| exist()        | Check file exist                 |
+| rename()       | Rename file                      |
+| copy()         | Copy current file to new file    |
+| delete()       | Delete current file              |
 
 ### CSV
 
-| Method | Info |
-| ------ | ------ |
-| skipFirstLine() | Skip first line when reading |
-| readToArray() | Reading a file into an array |
+| Method                     | Info                                               |
+|----------------------------|----------------------------------------------------|
+| skipFirstLine()            | Skip first line when reading                       |
+| readToArray()              | Reading a file into an array                       |
 | setAssociationsIndexKeys() | Replacing indexed keys with your read associations |
-| overwriteToFile() | Overwrite the current file with new data  |
-| appendToFile() | Append data to the end of the file |
-| saveToNewFile() | Save data from current file to new file |
+| overwriteToFile()          | Overwrite the current file with new data           |
+| appendToFile()             | Append data to the end of the file                 |
+| saveToNewFile()            | Save data from current file to new file            |
 
 ### Text File
 
-| Method | Info |
-| ------ | ------ |
-| readFileToArray() | Reading a file into an array |
-| readFileToString() | Reading a file into a string |
-| skipEmptyLine() | Skip blank line when reading |
-| ignoreNewLines() | Skip a newline at the end of each array element  |
-| overwriteToFile() | Overwrite the current file with new data  |
-| appendToFile() |  Append data to the end of the file  |
-| saveToNewFile() |  Save data from current file to new file  |
+| Method             | Info                                            |
+|--------------------|-------------------------------------------------|
+| readFileToArray()  | Reading a file into an array                    |
+| readFileToString() | Reading a file into a string                    |
+| skipEmptyLine()    | Skip blank line when reading                    |
+| ignoreNewLines()   | Skip a newline at the end of each array element |
+| overwriteToFile()  | Overwrite the current file with new data        |
+| appendToFile()     | Append data to the end of the file              |
+| saveToNewFile()    | Save data from current file to new file         |
 
 # Example
 

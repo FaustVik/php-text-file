@@ -5,7 +5,7 @@ namespace FaustVik\Files\File;
 use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Interfaces\LockingInterface;
 
-class LockDefault implements LockingInterface
+final class LockDefault implements LockingInterface
 {
     /**
      * @throws FileException

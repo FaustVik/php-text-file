@@ -1,6 +1,6 @@
 <?php
 
-namespace FaustVik\Files\File;
+namespace FaustVik\Files\Helpers;
 
 class FileMode
 {

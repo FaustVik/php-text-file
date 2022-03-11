@@ -6,6 +6,7 @@ use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Exceptions\FileIsNotReadable;
 use FaustVik\Files\Exceptions\FileNotFound;
 use FaustVik\Files\Helpers\FileInfo;
+use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\LockingInterface;
 
 class BaseFile extends AbstractFile

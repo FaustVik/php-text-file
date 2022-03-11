@@ -2,7 +2,7 @@
 
 namespace FaustVik\Files;
 
-use FaustVik\Files\interfaces\IoTextInterface;
+use FaustVik\Files\Interfaces\IoTextInterface;
 
 /**
  * Class TextFile

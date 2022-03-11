@@ -1,6 +1,6 @@
 <?php
 
-namespace FaustVik\Files\interfaces;
+namespace FaustVik\Files\Interfaces;
 
 /**
  * Interface IoTextInterface

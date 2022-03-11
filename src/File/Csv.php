@@ -1,14 +1,13 @@
 <?php
 
-namespace FaustVik\Files;
+namespace FaustVik\Files\File;
 
+use FaustVik\Files\Exceptions\FileIsNotReadable;
+use FaustVik\Files\Exceptions\FileNotFound;
 use FaustVik\Files\Exceptions\FileNotSupported;
+use FaustVik\Files\Helpers\FileInfo;
 
-/**
- * Class Csv
- * @package FaustVik\Files
- */
-class Csv extends AbstractFile
+class Csv extends BaseFile
 {
     /**@var array $list_ass_key */
     protected $list_ass_key = [];
@@ -17,18 +16,21 @@ class Csv extends AbstractFile
     protected $skip_first_line = false;
 
     /**
-     * Csv constructor.
-     *
-     * @param string $path_to_file
+     * @param string $pathFile
      *
      * @throws FileNotSupported
-     * @throws Exceptions\FileIsNotReadable
-     * @throws Exceptions\FileNotFound
+     * @throws FileIsNotReadable
+     * @throws FileNotFound
      */
-    public function __construct(string $path_to_file)
+    public function __construct(string $pathFile)
     {
-        parent::__construct($path_to_file);
-        $this->checkExtension();
+        parent::__construct($pathFile);
+
+        $ext = FileInfo::getExtension($pathFile);
+
+        if ($ext !== 'csv') {
+            throw new FileNotSupported($ext . ' this extension not supported');
+        }
     }
 
     /**
@@ -173,27 +175,6 @@ class Csv extends AbstractFile
     }
 
     /**
-     * @param string      $mode
-     * @param string|null $path_file
-     *
-     * @return false|resource
-     */
-    protected function openFile(string $mode = 'rb', string $path_file = null)
-    {
-        return fopen($path_file ?? $this->path_to_file, $mode);
-    }
-
-    /**
-     * @param resource $stream
-     *
-     * @return void
-     */
-    protected function closeFile($stream): void
-    {
-        fclose($stream);
-    }
-
-    /**
      * @param string $path_to_new_file
      * @param bool   $overwrite_file
      * @param string $separator
@@ -207,17 +188,5 @@ class Csv extends AbstractFile
 
         $handle_file = $this->openFile($mode, $path_to_new_file);
         $this->write($handle_file, $data, $separator, $enclosure, $escape_char);
-    }
-
-    /**
-     * @throws FileNotSupported
-     */
-    protected function checkExtension(): void
-    {
-        $ext = $this->getExtension();
-
-        if ($ext !== 'csv') {
-            throw new FileNotSupported($ext . ' this extension not supported');
-        }
     }
 }

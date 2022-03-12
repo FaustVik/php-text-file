@@ -10,9 +10,9 @@ interface IoTextInterface extends IoInterface
 {
     public function readFileToArray(): array;
 
-    public function readFileToString($offset = null, $length = null): string;
+    public function readFileToString(?int $offset = null, ?int $length = null): string;
 
-    public function overwriteToFile(string $text): void;
+    public function overWrite(string $text): void;
 
-    public function appendToFile(string $text): void;
+    public function write(string $text): void;
 }

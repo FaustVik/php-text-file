@@ -88,7 +88,7 @@ class TextFile extends AbstractFile implements IoTextInterface
     /**
      * @param string $text
      */
-    public function overwriteToFile(string $text): void
+    public function overWrite(string $text): void
     {
         $this->write($text, false);
     }
@@ -96,7 +96,7 @@ class TextFile extends AbstractFile implements IoTextInterface
     /**
      * @param string|null $text
      */
-    public function appendToFile(string $text): void
+    public function write(string $text): void
     {
         $this->write($text);
     }

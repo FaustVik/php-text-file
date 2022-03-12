@@ -19,6 +19,8 @@ class BaseFile extends AbstractFile
 
     protected $useLockFile = false;
 
+    protected $skipEmptyLine = false;
+
     /**
      * @param string $pathFile
      * @param bool   $create
@@ -116,14 +118,30 @@ class BaseFile extends AbstractFile
 
     protected function locking($stream, int $operation): void
     {
-        if ($this->useLockFile && !$this->lockHelper->lock($stream, $operation)) {
+        if (!$this->useLockFile) {
+            return;
+        }
+
+        if ($this->lockHelper === null) {
+            $this->setLockFile();
+        }
+
+        if (!$this->lockHelper->lock($stream, $operation)) {
             throw new FileException('Can\'t lock file');
         }
     }
 
-    protected function unlocking($stream, int $operation): void
+    protected function unlocking($stream): void
     {
-        if ($this->useLockFile && !$this->lockHelper->unlock($stream)) {
+        if (!$this->useLockFile) {
+            return;
+        }
+
+        if ($this->lockHelper === null) {
+            $this->setLockFile();
+        }
+
+        if (!$this->lockHelper->unlock($stream)) {
             throw new FileException('Can\'t unlock file');
         }
     }
@@ -156,5 +174,11 @@ class BaseFile extends AbstractFile
     {
         $handle = $this->openFile($path, FileMode::WRITE_ONLY);
         return $this->closeFile($handle);
+    }
+
+    public function skipEmptyLine(): self
+    {
+        $this->skipEmptyLine = true;
+        return $this;
     }
 }

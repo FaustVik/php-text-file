@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FaustVik\Files\Helpers;
 
+/**
+ * Class FileInfo
+ * @package FaustVik\Files\Helpers
+ */
 class FileInfo
 {
     /**

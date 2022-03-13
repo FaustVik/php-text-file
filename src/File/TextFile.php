@@ -65,7 +65,7 @@ class TextFile extends BaseFile implements IoTextInterface
     public function overWrite($text): bool
     {
         echo 'overWrite:' . PHP_EOL;
-        return $this->writeCommon($text, FileMode::WRITE_ONLY);
+        return $this->writeCommon($text, FileMode::WRITE_TRUNC_ONLY);
     }
 
     /**
@@ -77,7 +77,7 @@ class TextFile extends BaseFile implements IoTextInterface
     public function write($text): bool
     {
         echo 'Write:' . PHP_EOL;
-        return $this->writeCommon($text, FileMode::WRITE_ONLY_CAN_CREATE);
+        return $this->writeCommon($text, FileMode::WRITE_APPEND_ONLY);
     }
 
     /**

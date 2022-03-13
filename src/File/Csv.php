@@ -60,7 +60,7 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
     public function write(array $fields, string $separator = ","): bool
     {
         echo 'Write:' . PHP_EOL;
-        return $this->writeCommon(FileMode::WRITE_ONLY_CAN_CREATE, $fields, $separator);
+        return $this->writeCommon(FileMode::WRITE_APPEND_ONLY, $fields, $separator);
     }
 
     /**
@@ -73,7 +73,7 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
     public function overWrite(array $fields, string $separator = ","): bool
     {
         echo 'overWrite:' . PHP_EOL;
-        return $this->writeCommon(FileMode::WRITE_ONLY, $fields, $separator);
+        return $this->writeCommon(FileMode::WRITE_TRUNC_ONLY, $fields, $separator);
     }
 
     /**

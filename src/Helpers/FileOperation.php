@@ -7,6 +7,10 @@ namespace FaustVik\Files\Helpers;
 use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Exceptions\FileNotFound;
 
+/**
+ * Class FileOperation
+ * @package FaustVik\Files\Helpers
+ */
 class FileOperation
 {
     /**

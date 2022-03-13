@@ -186,7 +186,7 @@ class BaseFile extends AbstractFile
 
     public function flush(): bool
     {
-        $handle = $this->openFile($this->pathFile, FileMode::WRITE_READ);
+        $handle = $this->openFile($this->pathFile, FileMode::WRITE_READ_TRUNC);
         $result = ftruncate($handle, 0);
         $this->closeFile($handle);
         return $result;
@@ -216,7 +216,7 @@ class BaseFile extends AbstractFile
             return true;
         }
 
-        $handle = $this->openFile($path, FileMode::WRITE_ONLY);
+        $handle = $this->openFile($path, FileMode::WRITE_TRUNC_ONLY);
         return $this->closeFile($handle);
     }
 

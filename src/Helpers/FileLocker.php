@@ -6,42 +6,59 @@ namespace FaustVik\Files\Helpers;
 
 use FaustVik\Files\Exceptions\FileException;
 
+/**
+ * Class FileLocker
+ * @package FaustVik\Files\Helpers
+ */
 class FileLocker
 {
-    /**@var array $loc_files */
-    protected static $loc_files = [];
+    /**@var array $stackFilesIsLocked */
+    protected static $stackFilesIsLocked = [];
 
     /**
-     * @param resource $stream
-     * @param bool     $wait
+     * @param resource $handle
+     * @param string   $path
+     * @param int      $operation
      *
-     * @return false|mixed
+     * @return resource
      * @throws FileException
      */
-    public static function lock($stream, bool $wait)
+    public static function lock($handle, string $path, int $operation)
     {
-        if (!$stream || !is_resource($stream)) {
+        if (!$handle || !is_resource($handle)) {
             throw new FileException('Is not type resource');
         }
 
-        if ($wait) {
-            $lock = flock($stream, LOCK_EX);
-        } else {
-            $lock = flock($stream, LOCK_EX | LOCK_NB);
-        }
+        $lockResult = flock($handle, $operation);
 
-        if (!$lock) {
+        if (!$lockResult) {
             throw new FileException('Can\'t lock file');
         }
 
-        self::$loc_files[$stream] = $stream;
-        return $stream;
+        self::$stackFilesIsLocked[$path] = true;
+        return $handle;
     }
 
-    public static function unlockFile($file_name)
+    /**
+     * @param resource $handle
+     * @param string   $path
+     *
+     * @return resource
+     * @throws FileException
+     */
+    public static function unlockFile($handle, string $path)
     {
-        fclose(self::$loc_files[$file_name]);
-        @unlink($file_name);
-        unset(self::$loc_files[$file_name]);
+        if (!$handle || !is_resource($handle)) {
+            throw new FileException('Is not type resource');
+        }
+
+        $lockResult = flock($handle, LOCK_UN);
+
+        if (!$lockResult) {
+            throw new FileException('Can\'t unlock file');
+        }
+
+        unset(self::$stackFilesIsLocked[$path]);
+        return $handle;
     }
 }

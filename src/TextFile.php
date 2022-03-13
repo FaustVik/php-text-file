@@ -19,7 +19,7 @@ class TextFile extends AbstractFile implements IoTextInterface
     /**
      * @return array
      */
-    public function readFileToArray(): array
+    public function readToArray(): array
     {
         $flags = $this->getFlags();
         $array = file($this->path_to_file, $flags);
@@ -56,7 +56,7 @@ class TextFile extends AbstractFile implements IoTextInterface
      *
      * @return string
      */
-    public function readFileToString($offset = null, $length = null): string
+    public function readToString($offset = null, $length = null): string
     {
         $string = file_get_contents($this->path_to_file, false, null, $offset, $length);
 
@@ -106,7 +106,7 @@ class TextFile extends AbstractFile implements IoTextInterface
      */
     public function saveToNewFile(string $path_to_new_file): void
     {
-        $text = $this->readFileToString();
+        $text = $this->readToString();
         $this->write($text, false, $path_to_new_file);
     }
 

@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FaustVik\Files\File;
 
+/**
+ * Class AbstractFile
+ * @package FaustVik\Files\File
+ */
 abstract class AbstractFile
 {
     /**
@@ -24,14 +30,14 @@ abstract class AbstractFile
     abstract protected function closeFile($stream): bool;
 
     /**
-     * Clear file (result - empty file)
+     * Flush file (result - empty file)
      *
      * @return bool
      */
-    abstract public function clear(): bool;
+    abstract public function flush(): bool;
 
     /**
-     * Create empty file
+     * Create empty new file
      *
      * @param string $path
      *

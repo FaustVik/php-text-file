@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FaustVik\Files\File;
 
 use FaustVik\Files\Exceptions\FileException;
@@ -8,11 +10,24 @@ use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\IoTextInterface;
 use FaustVik\Files\Interfaces\LockingInterface;
 
+/**
+ * The class is used to read and write to text files.
+ * Does not support write to CSV. Use Csv class for this
+ *
+ * Class TextFile
+ * @package FaustVik\Files\File
+ */
 class TextFile extends BaseFile implements IoTextInterface
 {
-    public function readFileToArray(): array
+    /**
+     * @return array
+     * @throws FileException
+     * @throws ReadFile
+     */
+    public function readToArray(): array
     {
-        $st         = microtime(true);
+        $st = microtime(true);
+        echo 'ReadToArray:' . PHP_EOL;
         $handle     = $this->openFile($this->pathFile, FileMode::ONLY_READ_BINARY);
         $arrayLines = $this->readArray($handle);
         $this->closeFile($handle);
@@ -20,9 +35,18 @@ class TextFile extends BaseFile implements IoTextInterface
         return $arrayLines;
     }
 
-    public function readFileToString(?int $offset = null, ?int $length = null): string
+    /**
+     * @param int $offset
+     * @param int $length
+     *
+     * @return string
+     * @throws FileException
+     * @throws ReadFile
+     */
+    public function readToString(int $offset = 0, int $length = 0): string
     {
-        $st         = microtime(true);
+        $st = microtime(true);
+        echo 'ReadToString:' . PHP_EOL;
         $handle     = $this->openFile($this->pathFile, FileMode::ONLY_READ_BINARY);
         $arrayLines = $this->readString($handle, $offset, $length);
         $this->closeFile($handle);
@@ -30,14 +54,76 @@ class TextFile extends BaseFile implements IoTextInterface
         return $arrayLines;
     }
 
-    public function overWrite(string $text): void
+    /**
+     * @param string|array $text
+     *
+     * @return bool
+     * @throws FileException
+     * @throws \JsonException
+     */
+    public function overWrite($text): bool
     {
-        // TODO: Implement overwriteToFile() method.
+        echo 'overWrite:' . PHP_EOL;
+        return $this->writeCommon($text, FileMode::WRITE_ONLY);
     }
 
-    public function write(string $text): void
+    /**
+     * @param string|array $text
+     *
+     * @return bool
+     * @throws FileException|\JsonException
+     */
+    public function write($text): bool
     {
-        // TODO: Implement appendToFile() method.
+        echo 'Write:' . PHP_EOL;
+        return $this->writeCommon($text, FileMode::WRITE_ONLY_CAN_CREATE);
+    }
+
+    /**
+     * @param string|array $text
+     * @param string       $mode
+     *
+     * @return bool
+     * @throws FileException
+     * @throws \JsonException
+     */
+    protected function writeCommon($text, string $mode): bool
+    {
+        if (is_array($text)) {
+            $text = json_encode($text, JSON_THROW_ON_ERROR);
+            if ($text === false) {
+                throw new FileException('Can\'t json encode array');
+            }
+        } else {
+            try {
+                $text = (string)$text;
+            } catch (\Throwable $exception) {
+                throw new FileException($exception->getMessage());
+            }
+        }
+
+        $st     = microtime(true);
+        $handle = $this->openFile($this->pathFile, $mode);
+        $res    = $this->baseWrite($handle, $text);
+        $this->closeFile($handle);
+        echo (microtime(true) - $st) . PHP_EOL;
+        return $res;
+    }
+
+    /**
+     * @param resource $handle
+     * @param string   $text
+     *
+     * @return bool
+     * @throws FileException
+     */
+    protected function baseWrite($handle, string $text): bool
+    {
+        $this->checkResourceHandle($handle);
+        $this->locking($handle, LockingInterface::OPERATION_BLOCK_WRITE);
+        $result = fwrite($handle, $text);
+        $this->unlocking($handle);
+        return (bool)$result;
     }
 
     /**
@@ -51,6 +137,15 @@ class TextFile extends BaseFile implements IoTextInterface
     {
         $result = [];
         $this->baseRead($handle, $result);
+
+        if ($this->skipEmptyLine) {
+            foreach ($result as $k => $item) {
+                if ($item === "\n") {
+                    unset($result[$k]);
+                }
+            }
+        }
+
         return $result;
     }
 
@@ -63,12 +158,12 @@ class TextFile extends BaseFile implements IoTextInterface
      * @throws FileException
      * @throws ReadFile
      */
-    protected function readString($handle, ?int $offset = 0, ?int $length = null): string
+    protected function readString($handle, int $offset = 0, int $length = 0): string
     {
         $result = '';
         $this->baseRead($handle, $result);
 
-        if ($offset !== 0 && $offset !== null && $length !== null && $length !== 0) {
+        if ($offset !== 0 && $length !== 0) {
             $result = substr($result, $offset, $length);
         } elseif ($offset !== 0 && $offset !== null) {
             $result = substr($result, $offset);
@@ -87,21 +182,10 @@ class TextFile extends BaseFile implements IoTextInterface
      */
     protected function baseRead($handle, &$result)
     {
-        if (!$handle || !is_resource($handle)) {
-            throw new FileException('is not resource');
-        }
-
-        $this->locking($handle, LockingInterface::BLOCK_READ);
+        $this->checkResourceHandle($handle);
+        $this->locking($handle, LockingInterface::OPERATION_BLOCK_READ);
 
         while (($buffer = fgets($handle)) !== false) {
-            if (is_array($result)) {
-                $buffer = rtrim($buffer);
-            }
-
-            if ($this->skipEmptyLine && empty($buffer)) {
-                continue;
-            }
-
             if (is_array($result)) {
                 $result[] = $buffer;
             } else {

@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FaustVik\Files\File;
 
 use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Exceptions\FileIsNotReadable;
+use FaustVik\Files\Exceptions\FIleIsNotWriteable;
 use FaustVik\Files\Exceptions\FileNotFound;
 use FaustVik\Files\Helpers\FileInfo;
 use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\LockingInterface;
 
+/**
+ * Class AbstractFile
+ * @package FaustVik\Files\File
+ */
 class BaseFile extends AbstractFile
 {
     /**@var string $pathFile */
@@ -59,6 +66,10 @@ class BaseFile extends AbstractFile
         if (!FileInfo::isReadable($path)) {
             throw new FileIsNotReadable('is not readable file');
         }
+
+        if (!FileInfo::isWritable($path)) {
+            throw new FIleIsNotWriteable('is not writeable file');
+        }
     }
 
     /**
@@ -94,6 +105,11 @@ class BaseFile extends AbstractFile
         return fclose($stream);
     }
 
+    /**
+     * Enable a lock on a file when performing read or write operations
+     *
+     * @return $this
+     */
     public function enableLockFile(): self
     {
         $this->useLockFile = true;
@@ -101,11 +117,16 @@ class BaseFile extends AbstractFile
     }
 
     /**
+     * Add your own class for blocking files inherited from "LockingInterface"
+     * by default used LockDefault
+     *
      * @param LockingInterface|null $locking
      *
      * @return $this
+     * @see LockDefault,LockingInterface
+     *
      */
-    public function setLockFile(LockingInterface $locking = null): self
+    public function setLocker(LockingInterface $locking = null): self
     {
         if ($locking === null) {
             $this->lockHelper = new LockDefault();
@@ -116,6 +137,15 @@ class BaseFile extends AbstractFile
         return $this;
     }
 
+    /**
+     * wrapper for locking
+     *
+     * @param     $stream
+     * @param int $operation
+     *
+     * @return void
+     * @throws FileException
+     */
     protected function locking($stream, int $operation): void
     {
         if (!$this->useLockFile) {
@@ -123,7 +153,7 @@ class BaseFile extends AbstractFile
         }
 
         if ($this->lockHelper === null) {
-            $this->setLockFile();
+            $this->setLocker();
         }
 
         if (!$this->lockHelper->lock($stream, $operation)) {
@@ -131,6 +161,14 @@ class BaseFile extends AbstractFile
         }
     }
 
+    /**
+     * wrapper for unlocking
+     *
+     * @param $stream
+     *
+     * @return void
+     * @throws FileException
+     */
     protected function unlocking($stream): void
     {
         if (!$this->useLockFile) {
@@ -138,7 +176,7 @@ class BaseFile extends AbstractFile
         }
 
         if ($this->lockHelper === null) {
-            $this->setLockFile();
+            $this->setLocker();
         }
 
         if (!$this->lockHelper->unlock($stream)) {
@@ -146,7 +184,7 @@ class BaseFile extends AbstractFile
         }
     }
 
-    public function clear(): bool
+    public function flush(): bool
     {
         $handle = $this->openFile($this->pathFile, FileMode::WRITE_READ);
         $result = ftruncate($handle, 0);
@@ -155,6 +193,8 @@ class BaseFile extends AbstractFile
     }
 
     /**
+     * Return path to file
+     *
      * @return string
      */
     public function getPathFile(): string
@@ -165,20 +205,42 @@ class BaseFile extends AbstractFile
     /**
      * @param string $pathFile
      */
-    public function setPathFile(string $pathFile): void
+    protected function setPathFile(string $pathFile): void
     {
         $this->pathFile = $pathFile;
     }
 
     public function create(string $path): bool
     {
+        if (FileInfo::exist($path)) {
+            return true;
+        }
+
         $handle = $this->openFile($path, FileMode::WRITE_ONLY);
         return $this->closeFile($handle);
     }
 
+    /**
+     * only works when reading into an array
+     *
+     * @return $this
+     */
     public function skipEmptyLine(): self
     {
         $this->skipEmptyLine = true;
         return $this;
+    }
+
+    /**
+     * @param $handle
+     *
+     * @return void
+     * @throws FileException
+     */
+    protected function checkResourceHandle($handle): void
+    {
+        if (!$handle || !is_resource($handle)) {
+            throw new FileException('is not resource');
+        }
     }
 }

@@ -8,11 +8,40 @@ namespace FaustVik\Files\Interfaces;
  */
 interface IoTextInterface extends IoInterface
 {
-    public function readFileToArray(): array;
+    /**
+     * reading a file into an array. each row is a new array element
+     *
+     * @return array
+     */
+    public function readToArray(): array;
 
-    public function readFileToString(?int $offset = null, ?int $length = null): string;
+    /**
+     * reading a file into a string, you can control its length with offset and string length
+     *
+     * @param int $offset
+     * @param int $length
+     *
+     * @return string
+     */
+    public function readToString(int $offset = 0, int $length = 0): string;
 
-    public function overWrite(string $text): void;
+    /**
+     * Flush the file and write new $text to the beginning of the file.
+     * If the passed text is not an array, then it will be tried to be cast to a string
+     *
+     * @param string|array $text
+     *
+     * @return bool
+     */
+    public function overWrite($text): bool;
 
-    public function write(string $text): void;
+    /**
+     * $text is append to the end of the file.
+     * If the passed text is not an array, then it will be tried to be cast to a string
+     *
+     * @param string|array $text
+     *
+     * @return bool
+     */
+    public function write($text): bool;
 }

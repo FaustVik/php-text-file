@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FaustVik\Files\File;
 
 use FaustVik\Files\Exceptions\FileException;

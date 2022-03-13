@@ -1,10 +1,12 @@
 <?php
 
-namespace FaustVik\Files\Interfaces;
+declare(strict_types=1);
+
+namespace FaustVik\Files\Interfaces\InputOutput;
 
 /**
  * Interface IoTextInterface
- * @package FaustVik\Files\interfaces
+ * @package FaustVik\Files\Interfaces\InputOutput
  */
 interface IoTextInterface extends IoInterface
 {

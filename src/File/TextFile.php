@@ -7,12 +7,13 @@ namespace FaustVik\Files\File;
 use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Exceptions\ReadFile;
 use FaustVik\Files\Helpers\FileMode;
-use FaustVik\Files\Interfaces\IoTextInterface;
+use FaustVik\Files\Interfaces\InputOutput\IoTextInterface;
 use FaustVik\Files\Interfaces\LockingInterface;
 
 /**
  * The class is used to read and write to text files.
  * Does not support write to CSV. Use Csv class for this
+ * @see     Csv
  *
  * Class TextFile
  * @package FaustVik\Files\File

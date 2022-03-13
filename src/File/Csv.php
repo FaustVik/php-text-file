@@ -89,6 +89,7 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
 
     /**
      * @return array
+     * @throws FileException
      */
     public function getHeadersColumn(): array
     {

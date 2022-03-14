@@ -1,6 +1,6 @@
 # About
 
-Simple library for working with text files (CSV, .txt and etc.)
+Library working with text files (CSV, .txt and etc.)
 
 #Install
 

@@ -56,7 +56,7 @@ class FileOperation
         }
 
         if ($deleteOriginal && !self::delete($from)) {
-            throw new FileException('Can\'t delete file '.$from);
+            throw new FileException('Can\'t delete file ' . $from);
         }
 
         return true;
@@ -95,8 +95,8 @@ class FileOperation
      */
     public static function rename(string $path, string $newName)
     {
-        if (!FileInfo::exist($path)){
-           throw new FileNotFound($path);
+        if (!FileInfo::exist($path)) {
+            throw new FileNotFound($path);
         }
 
         $nameOld = FileInfo::getName($path);
@@ -107,5 +107,55 @@ class FileOperation
         }
 
         return $newPath;
+    }
+
+    /**
+     * @param string $path
+     * @param string $mode
+     *
+     * @return resource
+     * @throws FileException
+     */
+    public static function openFile(string $path, string $mode)
+    {
+        $handle = fopen($path, $mode);
+
+        if ($handle === false) {
+            throw new FileException('Cant open file');
+        }
+
+        return $handle;
+    }
+
+    /**
+     * @param resource $handle
+     *
+     * @return bool
+     * @throws FileException
+     */
+    public static function closeFile($handle): bool
+    {
+        if (!is_resource($handle)) {
+            throw new FileException('Is not type resource');
+        }
+
+        return fclose($handle);
+    }
+
+    /**
+     * @param string|resource $handle
+     *
+     * @return bool
+     * @throws FileException
+     */
+    public static function flush($handle): bool
+    {
+        if (!is_resource($handle)) {
+            $handle = self::openFile($handle, FileMode::WRITE_READ_TRUNC);
+        }
+
+        ftruncate($handle, 0);
+        return self::closeFile($handle);
+
     }
 }

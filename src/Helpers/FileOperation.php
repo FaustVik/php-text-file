@@ -156,6 +156,5 @@ class FileOperation
 
         ftruncate($handle, 0);
         return self::closeFile($handle);
-
     }
 }

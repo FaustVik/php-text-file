@@ -116,24 +116,30 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
     }
 
     /**
-     * @param int $column
+     * @param array $columns
      *
      * @return bool
      * @throws FileException
      */
-    public function deleteColumn(int $column): bool
+    public function deleteColumn(array $columns): bool
     {
+        if ($columns === []) {
+            return false;
+        }
+
         $data = $this->read();
 
         if ($data === []) {
             return false;
         }
 
-        foreach ($data as $k => $item) {
-            if (isset($item[$column])) {
-                $key = $this->listAssKey[$column] ?? $column;
-                unset($item[$key]);
-                $data[$k] = $item;
+        foreach ($columns as $column) {
+            foreach ($data as $k => $item) {
+                if (isset($item[$column])) {
+                    $key = $this->listAssKey[$column] ?? $column;
+                    unset($item[$key]);
+                    $data[$k] = $item;
+                }
             }
         }
 
@@ -141,21 +147,27 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
     }
 
     /**
-     * @param int $line
+     * @param array $lines
      *
      * @return bool
      * @throws FileException
      */
-    public function deleteLine(int $line): bool
+    public function deleteLine(array $lines): bool
     {
+        if ($lines === []) {
+            return false;
+        }
+
         $data = $this->read();
 
         if ($data === []) {
             return false;
         }
 
-        if (isset($data[$line])) {
-            unset($data[$line]);
+        foreach ($lines as $line) {
+            if (isset($data[$line])) {
+                unset($data[$line]);
+            }
         }
 
         return $this->overWrite($data);

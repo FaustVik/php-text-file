@@ -11,22 +11,22 @@ namespace FaustVik\Files\Interfaces;
 interface CsvRowManipulation
 {
     /**
-     * Removes an entire column from a file. The countdown is from 0
+     * Removes an entire columns from a file. The countdown is from 0
      *
-     * @param int $column
+     * @param array $columns
      *
      * @return bool
      */
-    public function deleteColumn(int $column): bool;
+    public function deleteColumn(array $columns): bool;
 
     /**
-     * Removes an entire line from a file. The countdown is from 0
+     * Removes an entire lines from a file. The countdown is from 0
      *
-     * @param int $line
+     * @param array $lines
      *
      * @return bool
      */
-    public function deleteLine(int $line): bool;
+    public function deleteLine(array $lines): bool;
 
     /**
      * Updates the first line in a file

@@ -7,7 +7,8 @@
     "files",
     "csv",
     "txt",
-    "text"
+    "text",
+    "read text"
   ],
   "minimum-stability": "stable",
   "license": "MIT",

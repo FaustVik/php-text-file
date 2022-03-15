@@ -81,6 +81,23 @@ class TextFile extends BaseFile implements IoTextInterface
     }
 
     /**
+     * @param $text
+     *
+     * @return bool
+     * @throws FileException
+     * @throws ReadFile
+     * @throws \JsonException
+     */
+    public function appendToStartFile($text): bool
+    {
+        $text       = $this->textToString($text);
+        $currenText = $this->readToString();
+        $text       .= $currenText;
+        unset($currenText);
+        return $this->overWrite($text);
+    }
+
+    /**
      * @param string|array $text
      * @param string       $mode
      *
@@ -90,6 +107,28 @@ class TextFile extends BaseFile implements IoTextInterface
      */
     protected function writeCommon($text, string $mode): bool
     {
+        $text   = $this->textToString($text);
+        $st     = microtime(true);
+        $handle = $this->openFile($this->pathFile, $mode);
+        $res    = $this->baseWrite($handle, $text);
+        $this->closeFile($handle);
+        echo (microtime(true) - $st) . PHP_EOL;
+        return $res;
+    }
+
+    /**
+     * @param array|string $text
+     *
+     * @return string
+     * @throws FileException
+     * @throws \JsonException
+     */
+    protected function textToString($text): string
+    {
+        if (is_string($text)) {
+            return $text;
+        }
+
         if (is_array($text)) {
             $text = json_encode($text, JSON_THROW_ON_ERROR);
             if ($text === false) {
@@ -103,12 +142,7 @@ class TextFile extends BaseFile implements IoTextInterface
             }
         }
 
-        $st     = microtime(true);
-        $handle = $this->openFile($this->pathFile, $mode);
-        $res    = $this->baseWrite($handle, $text);
-        $this->closeFile($handle);
-        echo (microtime(true) - $st) . PHP_EOL;
-        return $res;
+        return $text;
     }
 
     /**

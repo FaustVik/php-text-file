@@ -51,7 +51,7 @@ class BaseFile extends AbstractFile
      *
      * @return void
      * @throws FileIsNotReadable
-     * @throws FileNotFound
+     * @throws FileNotFound|FIleIsNotWriteable
      */
     protected function checkFile(string $path): void
     {

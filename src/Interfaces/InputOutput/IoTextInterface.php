@@ -46,4 +46,13 @@ interface IoTextInterface extends IoInterface
      * @return bool
      */
     public function write($text): bool;
+
+    /**
+     * Append text to the start of the file
+     *
+     * @param array|string $text
+     *
+     * @return bool
+     */
+    public function appendToStartFile($text): bool;
 }

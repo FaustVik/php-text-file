@@ -29,7 +29,7 @@ class FileInfo
      */
     public static function getSize(string $path): int
     {
-        self::clearStatCache(true, $path);
+        self::clearStatCache($path);
         return filesize($path);
     }
 
@@ -40,6 +40,7 @@ class FileInfo
      */
     public static function getExtension(string $path): ?string
     {
+        self::clearStatCache($path);
         $info = pathinfo($path);
         return $info['extension'] ?? null;
     }
@@ -92,7 +93,7 @@ class FileInfo
      *
      * @return void
      */
-    public static function clearStatCache(bool $clear_realpath_cache = false, string $filename):void
+    public static function clearStatCache(string $filename,bool $clear_realpath_cache = true):void
     {
         clearstatcache($clear_realpath_cache, $filename);
     }
@@ -104,7 +105,7 @@ class FileInfo
      */
     public static function exist(string $path): bool
     {
-        self::clearStatCache(true, $path);
+        self::clearStatCache($path);
         return file_exists($path);
     }
 

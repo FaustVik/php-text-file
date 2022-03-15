@@ -33,6 +33,8 @@ composer require faustvik/php-text-file
 | updateHeaders()              | Updates the first line in a file                                 |
 | deleteColumn()               | Removes an entire columns from a file. The countdown is from 0   |
 | deleteLine()                 | Removes an entire lines from a file. The countdown is from 0     |
+| getColumns()                 | Return selected array columns. The countdown is from 0           |
+| getLines()                   | Return selected array lines. The countdown is from 0             |
 
 ### Text File
 

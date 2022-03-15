@@ -133,8 +133,8 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
 
         foreach ($columns as $column) {
             foreach ($data as $k => $item) {
-                if (isset($item[$column])) {
-                    $key = $this->listAssKey[$column] ?? $column;
+                $key = $this->listAssKey[$column] ?? $column;
+                if (isset($item[$key])) {
                     unset($item[$key]);
                     $data[$k] = $item;
                 }
@@ -184,6 +184,67 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
         $handle = $this->openFile($this->pathFile, FileMode::ONLY_READ_BINARY);
         $result = $this->baseRead($handle, $length, $separator, $line);
         $this->closeFile($handle);
+
+        return $result;
+    }
+
+    /**
+     * @param array $columns
+     *
+     * @return array
+     * @throws FileException
+     */
+    public function getColumns(array $columns): array
+    {
+        $result = [];
+
+        if ($columns === []) {
+            return $result;
+        }
+
+        $data = $this->read();
+
+        if ($data === []) {
+            return $result;
+        }
+
+        foreach ($columns as $column) {
+            foreach ($data as $item) {
+                $key = $this->listAssKey[$column] ?? $column;
+                if (isset($item[$key])) {
+                    $result[$column][] = $item[$key];
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array $lines
+     *
+     * @return array
+     * @throws FileException
+     */
+    public function getLines(array $lines): array
+    {
+        $result = [];
+
+        if ($lines === []) {
+            return $result;
+        }
+
+        $data = $this->read();
+
+        if ($data === []) {
+            return $result;
+        }
+
+        foreach ($lines as $line) {
+            if (isset($data[$line])) {
+                $result[$line][] = $data[$line];
+            }
+        }
 
         return $result;
     }

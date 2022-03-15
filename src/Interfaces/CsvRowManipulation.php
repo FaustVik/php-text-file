@@ -43,4 +43,22 @@ interface CsvRowManipulation
      * @return array
      */
     public function getHeadersColumn(): array;
+
+    /**
+     * Return selected array column. The countdown is from 0
+     *
+     * @param array $columns
+     *
+     * @return array
+     */
+    public function getColumns(array $columns): array;
+
+    /**
+     * Return selected array line. The countdown is from 0
+     *
+     * @param array $lines
+     *
+     * @return array
+     */
+    public function getLines(array $lines): array;
 }

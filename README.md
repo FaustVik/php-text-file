@@ -1,6 +1,6 @@
 # About
 
-Simple library for working with text files (CSV, .txt and etc.)
+Library working with text files (CSV, text files). 
 
 #Install
 
@@ -10,150 +10,37 @@ composer require faustvik/php-text-file
 
 # Methods
 
-### Common functions
+### Helper classes
 
-| Method         | Info                             |
-|----------------|----------------------------------|
-| getPathFile()  | Get the path to the current file |
-| getName()      | Get file name                    |
-| getSize()      | Get file size (in bytes)         |
-| getExtension() | Get file extension               |
-| exist()        | Check file exist                 |
-| rename()       | Rename file                      |
-| copy()         | Copy current file to new file    |
-| delete()       | Delete current file              |
+| Class         | Info                                                                                   |
+|---------------|----------------------------------------------------------------------------------------|
+| FileInfo      | Get information about a file (owner, size, file existence, etc.)                       |
+| FileLocker    | Base class for blocking files with the flock function                                  |
+| FileMode      | Contains a list of mods for opening files                                              |
+| FileOperation | The class allows you to manipulate the file - move, delete, clear the file, copy, etc. |
 
 ### CSV
 
-| Method                     | Info                                               |
-|----------------------------|----------------------------------------------------|
-| skipFirstLine()            | Skip first line when reading                       |
-| readToArray()              | Reading a file into an array                       |
-| setAssociationsIndexKeys() | Replacing indexed keys with your read associations |
-| overwriteToFile()          | Overwrite the current file with new data           |
-| appendToFile()             | Append data to the end of the file                 |
-| saveToNewFile()            | Save data from current file to new file            |
+| Method                       | Info                                                             |
+|------------------------------|------------------------------------------------------------------|
+| skipFirstLine()              | Skip first line when reading                                     |
+| read()                       | Reading a file into an array                                     |
+| setAssociationsIndexKeys()   | Replacing indexed keys with your read associations               |
+| associationsKeyWithHeaders() | Replacing indexed keys with first line from file (headers table) |
+| overWrite()                  | Overwrite the current file with new data                         |
+| write()                      | Append data to the end of the file                               |
+| getHeadersColumn()           | Gets the first line in a file                                    |
+| updateHeaders()              | Updates the first line in a file                                 |
+| deleteColumn()               | Removes an entire columns from a file. The countdown is from 0   |
+| deleteLine()                 | Removes an entire lines from a file. The countdown is from 0     |
 
 ### Text File
 
-| Method             | Info                                            |
-|--------------------|-------------------------------------------------|
-| readFileToArray()  | Reading a file into an array                    |
-| readFileToString() | Reading a file into a string                    |
-| skipEmptyLine()    | Skip blank line when reading                    |
-| ignoreNewLines()   | Skip a newline at the end of each array element |
-| overwriteToFile()  | Overwrite the current file with new data        |
-| appendToFile()     | Append data to the end of the file              |
-| saveToNewFile()    | Save data from current file to new file         |
-
-# Example
-
-### CSV
-
-#### Read file
-
-```php
-<?php
-
-use FaustVik\Files\Csv;
-
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-$path_to_file = __DIR__ . '/GeoIP2-Country-Locations-en.csv';
-
-$csv = new Csv($path_to_file);
-
-$csv->setAssociationsIndexKeys([
-    'geo_name',
-    'local_code',
-    'continent_code',
-    'continent_name',
-    'country_iso_code',
-    'country_name',
-    'is_in_european_union',
-])->skipFirstLine();
-
-$data = $csv->readToArray();
-```
-
-Result with associations:
-
-```php
-  array(7) {
-    'geo_name' =>
-    string(5) "49518"
-    'local_code' =>
-    string(2) "en"
-    'continent_code' =>
-    string(2) "AF"
-    'continent_name' =>
-    string(6) "Africa"
-    'country_iso_code' =>
-    string(2) "RW"
-    'country_name' =>
-    string(6) "Rwanda"
-    'is_in_european_union' =>
-    string(1) "0"
-  }
-
-
-```
-
-Result without associations:
-
-```php
-  array(7) {
-  [0] =>
-  string(5) "49518"
-  [1] =>
-  string(2) "en"
-  [2] =>
-  string(2) "AF"
-  [3] =>
-  string(6) "Africa"
-  [4] =>
-  string(2) "RW"
-  [5] =>
-  string(6) "Rwanda"
-  [6] =>
-  string(1) "0"
-}
-
-```
-
-#### Write to file
-
-```php
-<?php
-
-use FaustVik\Files\Csv;
-
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-$path_to_file = __DIR__ . '/GeoIP2-Country-Locations-en.csv';
-
-$csv = new Csv($path_to_file);
-
-$new_data  = [['line', 'line', 'line', 'line', 'line']];
-$new_data1 = [['line123', 'line123', 'line123', 'line123', 123]];
-
-$csv->overwriteToFile($new_data);
-$csv->appendToFile($new_data1);
-```
-
-#### Save to new file
-
-```php
-<?php
-
-use FaustVik\Files\Csv;
-
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-$path_to_file     = __DIR__ . '/GeoIP2-Country-Locations-en.csv';
-$path_to_new_file = __DIR__ . '/new_file.csv';
-
-$csv = new Csv($path_to_file);
-
-$csv->saveToNewFile($path_to_new_file);
-```
+| Method              | Info                                              |
+|---------------------|---------------------------------------------------|
+| readToArray()       | Reading a file into an array                      |
+| readToString()      | Reading a file into a string                      |
+| skipEmptyLine()     | Skip blank line when reading (Only read to array) |  |
+| overWrite()         | Overwrite the current file with new data          |
+| write()             | Append data to the end of the file                |
+| appendToStartFile() | Append data to the start of the file              ||

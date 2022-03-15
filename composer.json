@@ -1,16 +1,16 @@
 {
   "name": "faustvik/php-text-file",
-  "description": "Simple library for working with text file",
+  "description": "Library for working with files",
   "keywords": [
     "php",
     "file",
     "files",
     "csv",
     "txt",
-    "text"
+    "text",
+    "read text"
   ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
+  "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
     {
@@ -19,7 +19,8 @@
     }
   ],
   "require": {
-    "php": ">=7.3"
+    "php": ">=7.3",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

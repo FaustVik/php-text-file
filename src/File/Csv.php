@@ -59,7 +59,6 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
      */
     public function write(array $fields, string $separator = ","): bool
     {
-        echo 'Write:' . PHP_EOL;
         return $this->writeCommon(FileMode::WRITE_APPEND_ONLY, $fields, $separator);
     }
 
@@ -72,7 +71,6 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
      */
     public function overWrite(array $fields, string $separator = ","): bool
     {
-        echo 'overWrite:' . PHP_EOL;
         return $this->writeCommon(FileMode::WRITE_TRUNC_ONLY, $fields, $separator);
     }
 
@@ -183,12 +181,9 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
      */
     public function read(int $length = 0, string $separator = ',', ?int $line = null): array
     {
-        echo 'Read' . PHP_EOL;
-        $st     = microtime(true);
         $handle = $this->openFile($this->pathFile, FileMode::ONLY_READ_BINARY);
         $result = $this->baseRead($handle, $length, $separator, $line);
         $this->closeFile($handle);
-        echo (microtime(true) - $st) . PHP_EOL;
 
         return $result;
     }
@@ -285,11 +280,10 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
      */
     protected function writeCommon(string $mode, array $fields, string $separator = ","): bool
     {
-        $st     = microtime(true);
         $handle = $this->openFile($this->pathFile, $mode);
         $res    = $this->baseWrite($handle, $fields, $separator);
         $this->closeFile($handle);
-        echo (microtime(true) - $st) . PHP_EOL;
+
         return $res;
     }
 

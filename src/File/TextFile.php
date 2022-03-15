@@ -27,12 +27,9 @@ class TextFile extends BaseFile implements IoTextInterface
      */
     public function readToArray(): array
     {
-        $st = microtime(true);
-        echo 'ReadToArray:' . PHP_EOL;
         $handle     = $this->openFile($this->pathFile, FileMode::ONLY_READ_BINARY);
         $arrayLines = $this->readArray($handle);
         $this->closeFile($handle);
-        echo (microtime(true) - $st) . PHP_EOL;
         return $arrayLines;
     }
 
@@ -46,12 +43,9 @@ class TextFile extends BaseFile implements IoTextInterface
      */
     public function readToString(int $offset = 0, int $length = 0): string
     {
-        $st = microtime(true);
-        echo 'ReadToString:' . PHP_EOL;
         $handle     = $this->openFile($this->pathFile, FileMode::ONLY_READ_BINARY);
         $arrayLines = $this->readString($handle, $offset, $length);
         $this->closeFile($handle);
-        echo (microtime(true) - $st) . PHP_EOL;
         return $arrayLines;
     }
 
@@ -64,7 +58,6 @@ class TextFile extends BaseFile implements IoTextInterface
      */
     public function overWrite($text): bool
     {
-        echo 'overWrite:' . PHP_EOL;
         return $this->writeCommon($text, FileMode::WRITE_TRUNC_ONLY);
     }
 
@@ -76,7 +69,6 @@ class TextFile extends BaseFile implements IoTextInterface
      */
     public function write($text): bool
     {
-        echo 'Write:' . PHP_EOL;
         return $this->writeCommon($text, FileMode::WRITE_APPEND_ONLY);
     }
 
@@ -108,11 +100,9 @@ class TextFile extends BaseFile implements IoTextInterface
     protected function writeCommon($text, string $mode): bool
     {
         $text   = $this->textToString($text);
-        $st     = microtime(true);
         $handle = $this->openFile($this->pathFile, $mode);
         $res    = $this->baseWrite($handle, $text);
         $this->closeFile($handle);
-        echo (microtime(true) - $st) . PHP_EOL;
         return $res;
     }
 
@@ -132,7 +122,7 @@ class TextFile extends BaseFile implements IoTextInterface
         if (is_array($text)) {
             $text = json_encode($text, JSON_THROW_ON_ERROR);
             if ($text === false) {
-                throw new FileException('Can\'t json encode array');
+                throw new FileException('Cant json_encode to array');
             }
         } else {
             try {
@@ -229,7 +219,7 @@ class TextFile extends BaseFile implements IoTextInterface
         }
 
         if (!feof($handle)) {
-            throw new ReadFile('Error while reading file');
+            throw new ReadFile('Error reading file');
         }
 
         $this->unlocking($handle);

@@ -64,11 +64,11 @@ class BaseFile extends AbstractFile
         }
 
         if (!FileInfo::isReadable($path)) {
-            throw new FileIsNotReadable('is not readable file');
+            throw new FileIsNotReadable('Is not readable file');
         }
 
         if (!FileInfo::isWritable($path)) {
-            throw new FIleIsNotWriteable('is not writeable file');
+            throw new FIleIsNotWriteable('Is not writeable file');
         }
     }
 
@@ -98,10 +98,7 @@ class BaseFile extends AbstractFile
      */
     protected function closeFile($stream): bool
     {
-        if (!is_resource($stream)) {
-            throw new FileException('Is not type resource');
-        }
-
+       $this->checkResourceHandle($stream);
         return fclose($stream);
     }
 
@@ -157,7 +154,7 @@ class BaseFile extends AbstractFile
         }
 
         if (!$this->lockHelper->lock($stream, $operation)) {
-            throw new FileException('Can\'t lock file');
+            throw new FileException('Cant lock file');
         }
     }
 
@@ -180,7 +177,7 @@ class BaseFile extends AbstractFile
         }
 
         if (!$this->lockHelper->unlock($stream)) {
-            throw new FileException('Can\'t unlock file');
+            throw new FileException('Cant unlock file');
         }
     }
 

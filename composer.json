@@ -8,7 +8,8 @@
     "csv",
     "txt",
     "text",
-    "read text"
+    "read text",
+    "directory"
   ],
   "minimum-stability": "stable",
   "license": "MIT",
@@ -20,7 +21,8 @@
   ],
   "require": {
     "php": ">=7.3",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-posix": "*"
   },
   "autoload": {
     "psr-4": {

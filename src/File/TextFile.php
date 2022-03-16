@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\File;
 
+use FaustVik\Files\Exceptions\File\CantReadFile;
 use FaustVik\Files\Exceptions\FileException;
-use FaustVik\Files\Exceptions\ReadFile;
 use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\InputOutput\IoTextInterface;
 use FaustVik\Files\Interfaces\LockingInterface;
@@ -23,7 +23,7 @@ class TextFile extends BaseFile implements IoTextInterface
     /**
      * @return array
      * @throws FileException
-     * @throws ReadFile
+     * @throws CantReadFile
      */
     public function readToArray(): array
     {
@@ -39,7 +39,7 @@ class TextFile extends BaseFile implements IoTextInterface
      *
      * @return string
      * @throws FileException
-     * @throws ReadFile
+     * @throws CantReadFile
      */
     public function readToString(int $offset = 0, int $length = 0): string
     {
@@ -77,7 +77,7 @@ class TextFile extends BaseFile implements IoTextInterface
      *
      * @return bool
      * @throws FileException
-     * @throws ReadFile
+     * @throws CantReadFile
      * @throws \JsonException
      */
     public function appendToStartFile($text): bool
@@ -156,7 +156,7 @@ class TextFile extends BaseFile implements IoTextInterface
      *
      * @return array
      * @throws FileException
-     * @throws ReadFile
+     * @throws CantReadFile
      */
     protected function readArray($handle): array
     {
@@ -181,7 +181,7 @@ class TextFile extends BaseFile implements IoTextInterface
      *
      * @return string
      * @throws FileException
-     * @throws ReadFile
+     * @throws CantReadFile
      */
     protected function readString($handle, int $offset = 0, int $length = 0): string
     {
@@ -203,7 +203,7 @@ class TextFile extends BaseFile implements IoTextInterface
      *
      * @return array|string
      * @throws FileException
-     * @throws ReadFile
+     * @throws CantReadFile
      */
     protected function baseRead($handle, &$result)
     {
@@ -219,7 +219,7 @@ class TextFile extends BaseFile implements IoTextInterface
         }
 
         if (!feof($handle)) {
-            throw new ReadFile('Error reading file');
+            throw new CantReadFile();
         }
 
         $this->unlocking($handle);

@@ -1,6 +1,7 @@
 # About
 
-Library working with text files (CSV, text files). 
+Library for working with files. You can conveniently work with ksv or simple text files.
+Also create directories and work with them
 
 #Install
 
@@ -8,16 +9,18 @@ Library working with text files (CSV, text files).
 composer require faustvik/php-text-file
 ```
 
+# Helper classes
+
+| Class              | Info                                                                                   |
+|--------------------|----------------------------------------------------------------------------------------|
+| FileInfo           | Get information about a file (owner, size, file existence, etc.)                       |
+| FileLocker         | Base class for blocking files with the flock function                                  |
+| FileMode           | Contains a list of mods for opening files                                              |
+| FileOperation      | The class allows you to manipulate the file - move, delete, clear the file, copy, etc. |
+| DirectoryOperation | The class allows you to manipulate the directories -delete, create, open etc.          |
+| DirectoryInfo      | The class allows you to for directory operations (existence, scanning)                 |
+
 # Methods
-
-### Helper classes
-
-| Class         | Info                                                                                   |
-|---------------|----------------------------------------------------------------------------------------|
-| FileInfo      | Get information about a file (owner, size, file existence, etc.)                       |
-| FileLocker    | Base class for blocking files with the flock function                                  |
-| FileMode      | Contains a list of mods for opening files                                              |
-| FileOperation | The class allows you to manipulate the file - move, delete, clear the file, copy, etc. |
 
 ### CSV
 

@@ -3,10 +3,10 @@
 namespace FaustVik\Files\Exceptions;
 
 /**
- * Class FileException
+ * Class DirectoryException
  * @package FaustVik\Files\Exceptions
  */
-class FileException extends \Exception
+class DirectoryException extends \Exception
 {
 
 }

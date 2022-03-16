@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\File;
 
+use FaustVik\Files\Exceptions\File\FileIsNotReadable;
+use FaustVik\Files\Exceptions\File\FIleIsNotWriteable;
+use FaustVik\Files\Exceptions\File\FileNotFound;
 use FaustVik\Files\Exceptions\FileException;
-use FaustVik\Files\Exceptions\FileIsNotReadable;
-use FaustVik\Files\Exceptions\FIleIsNotWriteable;
-use FaustVik\Files\Exceptions\FileNotFound;
+use FaustVik\Files\Exceptions\IsNotResource;
 use FaustVik\Files\Helpers\FileInfo;
 use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\LockingInterface;
@@ -50,25 +51,27 @@ class BaseFile extends AbstractFile
      * @param string $path
      *
      * @return void
+     * @throws FIleIsNotWriteable
+     * @throws FileException
      * @throws FileIsNotReadable
-     * @throws FileNotFound|FIleIsNotWriteable
+     * @throws FileNotFound
      */
     protected function checkFile(string $path): void
     {
         if (!FileInfo::exist($path)) {
-            throw new FileNotFound('Not found file path: ' . $path);
+            throw new FileNotFound($path);
         }
 
         if (!is_file($path)) {
-            throw new FileNotFound('Is not file');
+            throw new FileException('Is not file');
         }
 
         if (!FileInfo::isReadable($path)) {
-            throw new FileIsNotReadable('Is not readable file');
+            throw new FileIsNotReadable($path);
         }
 
         if (!FileInfo::isWritable($path)) {
-            throw new FIleIsNotWriteable('Is not writeable file');
+            throw new FIleIsNotWriteable($path);
         }
     }
 
@@ -98,7 +101,7 @@ class BaseFile extends AbstractFile
      */
     protected function closeFile($stream): bool
     {
-       $this->checkResourceHandle($stream);
+        $this->checkResourceHandle($stream);
         return fclose($stream);
     }
 
@@ -232,12 +235,12 @@ class BaseFile extends AbstractFile
      * @param $handle
      *
      * @return void
-     * @throws FileException
+     * @throws IsNotResource
      */
     protected function checkResourceHandle($handle): void
     {
         if (!$handle || !is_resource($handle)) {
-            throw new FileException('is not resource');
+            throw new IsNotResource();
         }
     }
 }

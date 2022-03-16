@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\File;
 
-use FaustVik\Files\Exceptions\FileException;
+use FaustVik\Files\Exceptions\IsNotResource;
 use FaustVik\Files\Interfaces\LockingInterface;
 
 /**
@@ -19,7 +19,11 @@ use FaustVik\Files\Interfaces\LockingInterface;
 final class LockDefault implements LockingInterface
 {
     /**
-     * @throws FileException
+     * @param resource $stream
+     * @param int      $operation
+     *
+     * @return bool
+     * @throws IsNotResource
      */
     public function lock($stream, int $operation): bool
     {
@@ -27,6 +31,12 @@ final class LockDefault implements LockingInterface
         return flock($stream, $operation);
     }
 
+    /**
+     * @param resource $stream
+     *
+     * @return bool
+     * @throws IsNotResource
+     */
     public function unlock($stream): bool
     {
         $this->checkResource($stream);
@@ -37,12 +47,12 @@ final class LockDefault implements LockingInterface
      * @param resource $stream
      *
      * @return void
-     * @throws FileException
+     * @throws IsNotResource
      */
     protected function checkResource($stream): void
     {
         if (!$stream || !is_resource($stream)) {
-            throw new FileException('Is not type resource');
+            throw new IsNotResource();
         }
     }
 }

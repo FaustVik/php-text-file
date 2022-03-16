@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\File;
 
+use FaustVik\Files\Exceptions\File\FileIsNotReadable;
+use FaustVik\Files\Exceptions\File\FileNotFound;
+use FaustVik\Files\Exceptions\File\FileExtensionIsNotSupported;
 use FaustVik\Files\Exceptions\FileException;
-use FaustVik\Files\Exceptions\FileIsNotReadable;
-use FaustVik\Files\Exceptions\FileNotFound;
-use FaustVik\Files\Exceptions\FileNotSupported;
 use FaustVik\Files\Helpers\FileInfo;
 use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\CsvRowManipulation;
@@ -34,7 +34,7 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
     /**
      * @param string $pathFile
      *
-     * @throws FileNotSupported
+     * @throws FileExtensionIsNotSupported
      * @throws FileIsNotReadable
      * @throws FileNotFound
      * @throws FileException
@@ -46,7 +46,7 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
         $ext = FileInfo::getExtension($pathFile);
 
         if ($ext !== 'csv') {
-            throw new FileNotSupported($ext . ' this extension not supported');
+            throw new FileExtensionIsNotSupported($ext);
         }
     }
 

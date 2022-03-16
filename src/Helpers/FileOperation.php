@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\Helpers;
 
+use FaustVik\Files\Exceptions\File\FileNotFound;
 use FaustVik\Files\Exceptions\FileException;
-use FaustVik\Files\Exceptions\FileNotFound;
+use FaustVik\Files\Exceptions\IsNotResource;
 
 /**
  * Class FileOperation
@@ -131,12 +132,12 @@ class FileOperation
      * @param resource $handle
      *
      * @return bool
-     * @throws FileException
+     * @throws IsNotResource
      */
     public static function closeFile($handle): bool
     {
         if (!is_resource($handle)) {
-            throw new FileException('Is not type resource');
+            throw new IsNotResource();
         }
 
         return fclose($handle);

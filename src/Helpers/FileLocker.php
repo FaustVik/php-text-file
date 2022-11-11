@@ -7,6 +7,9 @@ namespace FaustVik\Files\Helpers;
 use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Exceptions\IsNotResource;
 
+use function flock;
+use function is_resource;
+
 /**
  * Class FileLocker
  * @package FaustVik\Files\Helpers
@@ -26,7 +29,7 @@ class FileLocker
      */
     public static function lock($handle, string $path, int $operation)
     {
-        if (!$handle || !is_resource($handle)) {
+        if (!is_resource($handle)) {
             throw new IsNotResource();
         }
 
@@ -49,7 +52,7 @@ class FileLocker
      */
     public static function unlockFile($handle, string $path)
     {
-        if (!$handle || !is_resource($handle)) {
+        if (!is_resource($handle)) {
             throw new IsNotResource();
         }
 

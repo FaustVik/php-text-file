@@ -8,5 +8,4 @@ namespace FaustVik\Files\Interfaces\InputOutput;
  */
 interface IoInterface
 {
-
 }

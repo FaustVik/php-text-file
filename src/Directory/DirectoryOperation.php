@@ -8,11 +8,20 @@ use FaustVik\Files\Exceptions\DirectoryException;
 use FaustVik\Files\Exceptions\IsNotResource;
 use FaustVik\Files\Helpers\FileOperation;
 
+use function closedir;
+use function explode;
+use function is_dir;
+use function is_resource;
+use function mkdir;
+use function opendir;
+use function readdir;
+use function rmdir;
+
 /**
  * Class DirectoryOperation
  * @package FaustVik\Files\Directory
  */
-class DirectoryOperation
+final class DirectoryOperation
 {
     /**
      * Creating nested directories

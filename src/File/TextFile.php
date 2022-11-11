@@ -10,6 +10,14 @@ use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\InputOutput\IoTextInterface;
 use FaustVik\Files\Interfaces\LockingInterface;
 
+use function feof;
+use function fgets;
+use function fwrite;
+use function is_array;
+use function is_string;
+use function json_encode;
+use function substr;
+
 /**
  * The class is used to read and write to text files.
  * Does not support write to CSV. Use Csv class for this
@@ -121,14 +129,8 @@ class TextFile extends BaseFile implements IoTextInterface
 
         if (is_array($text)) {
             $text = json_encode($text, JSON_THROW_ON_ERROR);
-            if ($text === false) {
+            if (!$text) {
                 throw new FileException('Cant json_encode to array');
-            }
-        } else {
-            try {
-                $text = (string)$text;
-            } catch (\Throwable $exception) {
-                throw new FileException($exception->getMessage());
             }
         }
 
@@ -148,7 +150,7 @@ class TextFile extends BaseFile implements IoTextInterface
         $this->locking($handle, LockingInterface::OPERATION_BLOCK_WRITE);
         $result = fwrite($handle, $text);
         $this->unlocking($handle);
-        return (bool)$result;
+        return (bool) $result;
     }
 
     /**
@@ -183,7 +185,7 @@ class TextFile extends BaseFile implements IoTextInterface
      * @throws FileException
      * @throws CantReadFile
      */
-    protected function readString($handle, int $offset = 0, int $length = 0): string
+    protected function readString($handle, ?int $offset = 0, ?int $length = 0): string
     {
         $result = '';
         $this->baseRead($handle, $result);

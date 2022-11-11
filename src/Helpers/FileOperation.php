@@ -8,6 +8,15 @@ use FaustVik\Files\Exceptions\File\FileNotFound;
 use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Exceptions\IsNotResource;
 
+use function copy;
+use function fclose;
+use function fopen;
+use function ftruncate;
+use function is_resource;
+use function rename;
+use function str_replace;
+use function unlink;
+
 /**
  * Class FileOperation
  * @package FaustVik\Files\Helpers

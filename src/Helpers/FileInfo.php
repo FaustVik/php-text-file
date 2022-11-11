@@ -4,11 +4,22 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\Helpers;
 
+use function basename;
+use function clearstatcache;
+use function file_exists;
+use function filemtime;
+use function fileowner;
+use function filesize;
+use function is_readable;
+use function is_writable;
+use function pathinfo;
+use function posix_getpwuid;
+
 /**
  * Class FileInfo
  * @package FaustVik\Files\Helpers
  */
-class FileInfo
+final class FileInfo
 {
     /**
      * @param string $path
@@ -64,7 +75,7 @@ class FileInfo
      *
      * @return bool
      */
-    public static function isReadable(string $path):bool
+    public static function isReadable(string $path): bool
     {
         if (!self::exist($path)) {
             return false;
@@ -93,7 +104,7 @@ class FileInfo
      *
      * @return void
      */
-    public static function clearStatCache(string $filename,bool $clear_realpath_cache = true):void
+    public static function clearStatCache(string $filename, bool $clear_realpath_cache = true): void
     {
         clearstatcache($clear_realpath_cache, $filename);
     }

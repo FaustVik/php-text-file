@@ -28,5 +28,16 @@
     "psr-4": {
       "FaustVik\\Files\\": "src/"
     }
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.9",
+    "squizlabs/php_codesniffer": "^3.5"
+  },
+  "scripts": {
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf"
+  },
+  "config": {
+    "sort-packages": true
   }
 }

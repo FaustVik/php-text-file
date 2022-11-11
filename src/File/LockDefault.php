@@ -7,6 +7,9 @@ namespace FaustVik\Files\File;
 use FaustVik\Files\Exceptions\IsNotResource;
 use FaustVik\Files\Interfaces\LockingInterface;
 
+use function flock;
+use function is_resource;
+
 /**
  * The base class for performing file locking when an operation (read/write).
  * You can create your own by inheriting from LockingInterface
@@ -51,7 +54,7 @@ final class LockDefault implements LockingInterface
      */
     protected function checkResource($stream): void
     {
-        if (!$stream || !is_resource($stream)) {
+        if (!is_resource($stream)) {
             throw new IsNotResource();
         }
     }

@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\Directory;
 
+use function is_dir;
+use function realpath;
+use function scandir;
+
 /**
  * Class DirectoryInfo
  * @package FaustVik\Files\Directory
  */
-class DirectoryInfo
+final class DirectoryInfo
 {
     public const SORT_ASC  = SCANDIR_SORT_ASCENDING;
     public const SORT_DESC = SCANDIR_SORT_DESCENDING;

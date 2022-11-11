@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\File;
 
+use FaustVik\Files\Exceptions\File\FileExtensionIsNotSupported;
 use FaustVik\Files\Exceptions\File\FileIsNotReadable;
 use FaustVik\Files\Exceptions\File\FileNotFound;
-use FaustVik\Files\Exceptions\File\FileExtensionIsNotSupported;
 use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Helpers\FileInfo;
 use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\CsvRowManipulation;
 use FaustVik\Files\Interfaces\InputOutput\IoCsvInterface;
 use FaustVik\Files\Interfaces\LockingInterface;
+
+use function count;
+use function fgetcsv;
+use function fputcsv;
 
 /**
  * The class is used to read and write to csv files.
@@ -373,6 +377,6 @@ class Csv extends BaseFile implements IoCsvInterface, CsvRowManipulation
             }
         }
         $this->unlocking($handle);
-        return (bool)$result;
+        return (bool) $result;
     }
 }

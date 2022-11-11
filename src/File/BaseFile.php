@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace FaustVik\Files\File;
 
 use FaustVik\Files\Exceptions\File\FileIsNotReadable;
-use FaustVik\Files\Exceptions\File\FIleIsNotWriteable;
+use FaustVik\Files\Exceptions\File\FileIsNotWriteable;
 use FaustVik\Files\Exceptions\File\FileNotFound;
 use FaustVik\Files\Exceptions\FileException;
 use FaustVik\Files\Exceptions\IsNotResource;
 use FaustVik\Files\Helpers\FileInfo;
 use FaustVik\Files\Helpers\FileMode;
 use FaustVik\Files\Interfaces\LockingInterface;
+
+use function fclose;
+use function fopen;
+use function ftruncate;
+use function is_file;
+use function is_resource;
 
 /**
  * Class AbstractFile
@@ -51,7 +57,7 @@ class BaseFile extends AbstractFile
      * @param string $path
      *
      * @return void
-     * @throws FIleIsNotWriteable
+     * @throws FileIsNotWriteable
      * @throws FileException
      * @throws FileIsNotReadable
      * @throws FileNotFound
@@ -71,7 +77,7 @@ class BaseFile extends AbstractFile
         }
 
         if (!FileInfo::isWritable($path)) {
-            throw new FIleIsNotWriteable($path);
+            throw new FileIsNotWriteable($path);
         }
     }
 
@@ -184,6 +190,9 @@ class BaseFile extends AbstractFile
         }
     }
 
+    /**
+     * @throws FileException
+     */
     public function flush(): bool
     {
         $handle = $this->openFile($this->pathFile, FileMode::WRITE_READ_TRUNC);
@@ -210,6 +219,9 @@ class BaseFile extends AbstractFile
         $this->pathFile = $pathFile;
     }
 
+    /**
+     * @throws FileException
+     */
     public function create(string $path): bool
     {
         if (FileInfo::exist($path)) {

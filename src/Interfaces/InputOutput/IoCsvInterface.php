@@ -16,7 +16,7 @@ interface IoCsvInterface extends IoInterface
      *
      * @return bool
      */
-    public function write(array $fields, string $separator = ","): bool;
+    public function write(array $fields, string $separator = ','): bool;
 
     /**
      * @param int      $length
@@ -33,5 +33,5 @@ interface IoCsvInterface extends IoInterface
      *
      * @return bool
      */
-    public function overWrite(array $fields, string $separator = ","): bool;
+    public function overWrite(array $fields, string $separator = ','): bool;
 }

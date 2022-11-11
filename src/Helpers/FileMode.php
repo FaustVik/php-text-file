@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FaustVik\Files\Helpers;
 
+use function in_array;
+
 /**
  * Class FileMode
  * @package FaustVik\Files\Helpers
